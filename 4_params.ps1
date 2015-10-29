@@ -63,12 +63,13 @@ $DevConfigData = @{
         },
 
         @{
-            NodeName = "dev-vm-1";
+            NodeName = "dev-vm-1"
             Role = "WebServer"
+            SiteName = "devvm1"
         },
         @{
-            NodeName = "dev-vm-2";
-            Role = "WebServer"
+            NodeName = "dev-vm-2"
+            Role = "Db"
         }
     );
 
@@ -88,16 +89,19 @@ $TestConfigData = @{
         },
 
         @{
-            NodeName = "test-vm-1";
+            NodeName = "test-vm-1"
             Role = "WebServer"
+            SiteName = "vm1"
+
         },
         @{
-            NodeName = "test-vm-2";
+            NodeName = "test-vm-2"
             Role = "WebServer"
+            SiteName = "vm2"
         },
         @{
-            NodeName = "test-vm-3";
-            Role = "WebServer"
+            NodeName = "test-vm-3"
+            Role = "Db"
         }
     );
 
@@ -106,9 +110,10 @@ $TestConfigData = @{
     }
 }
 
-Configuration DevConfiguration
+Configuration EnvConfiguration
 {
     Import-DscResource –ModuleName PSDesiredStateConfiguration
+    Import-DscResource -ModuleName xWebAdministration 
 
     Node $AllNodes.Where{$_.Role -eq "WebServer"}.NodeName
     {
@@ -118,6 +123,14 @@ Configuration DevConfiguration
             Ensure = "Present"
         }
 
+        xWebsite Site
+        {
+            Name         = $Node.SiteName
+            PhysicalPath = $Node.SiteName
+            Ensure       = "Present"
+            DependsOn = '[WindowsFeature]IIS'
+        }    
+        
         File ConfigFile
         {
             DestinationPath = "c:/temp/config.txt"
@@ -126,4 +139,5 @@ Configuration DevConfiguration
     }
 }
 
-DevConfiguration -ConfigurationData $TestConfigData -OutputPath "c:/temp/params"
+EnvConfiguration -ConfigurationData $TestConfigData -OutputPath "c:/temp/params"
+# EnvConfiguration -ConfigurationData c:/env/test/configdata.psd1 -OutputPath "c:/temp/params"
