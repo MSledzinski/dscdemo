@@ -13,3 +13,10 @@ Get-DscResource
 
  # show example of module-resource
  explorer (Get-DscResource cWSManListener | Select-Object path)
+
+
+ # https://gallery.technet.microsoft.com/scriptcenter/DSC-Resource-Kit-All-c449312d
+ # https://github.com/PowerShellOrg
+
+ # interesting cross machine dependencies
+ # get-dscresource WaitFor*

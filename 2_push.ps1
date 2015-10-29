@@ -17,13 +17,6 @@
            DestinationPath = 'c:/CustomLogs'
            Attributes = 'Archive'
         }
-
-        Log AfterDirectoryCopy
-        {
-            #Microsoft-Windows-Desired State Configuration/Analytic log
-            DependsOn = "[WindowsFeature]IIS"
-            Message = "Some important info"
-        }
     }
 }
 
