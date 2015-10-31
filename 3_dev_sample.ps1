@@ -6,6 +6,7 @@
 
     Node DevWorkstation
     {
+          # problem with windows 8.1 - no servermanager, but dism
           WindowsFeature IIS 
           { 
             Ensure = "Present" 

@@ -1,8 +1,10 @@
-﻿Configuration WebServer
+﻿# litlle bit about resource - test, get, set, report
+
+Configuration WebServer
 {
     Import-DscResource –ModuleName ’PSDesiredStateConfiguration’
 
-    Node $NodeNames 
+    Node vm-ms-dsc2.fp.lan 
     {
         WindowsFeature IIS 
         {
@@ -17,24 +19,35 @@
            DestinationPath = 'c:/CustomLogs'
            Attributes = 'Archive'
         }
+
+        Registry RegistryExample
+        {
+            Ensure = "Present" 
+            Key = "HKEY_LOCAL_MACHINE\SOFTWARE\WebCustomKey"
+            ValueName = "LogFolder"
+            ValueData = "c:/CustomLogs"
+        }
     }
 }
 
-$NodeNames = 's1', 's2'
 $OutPath = 'c:/DSC/IIS'
 
 WebServer -OutputPath $OutPath
 
 cd $OutPath
 
-return
+# no meta in MOF name
 
-# o -wait runs as backgoruind job in ps 
-Start-DscConfiguration -Path $OutPath -ComputerName 's1' -Verbose -Wait
+# !! check features on machine
+
+Test-DscConfiguration -Path $OutPath -ComputerName vm-ms-dsc2.fp.lan -Verbose
+
+# o -wait runs as background job in ps 
+Start-DscConfiguration -Path $OutPath -ComputerName vm-ms-dsc2.fp.lan -Verbose -Wait
 
 # verbose output 
 
-Test-DscConfiguration -Path $OutPath -ComputerName 's1'
+Test-DscConfiguration -Path $OutPath -ComputerName vm-ms-dsc2.fp.lan | % ResourcesNotInDesiredState | Format-List
 
-
-invoke-command -ComputerName 's1' -ScriptBlock { Remove-Item "c:/temp"  }
+# evil guy comes to box and...
+invoke-command -ComputerName vm-ms-dsc2.fp.lan -ScriptBlock { Remove-Item "c:/CustomLogs"  }

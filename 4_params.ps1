@@ -1,5 +1,4 @@
-﻿# parametrized configurations 25:00
-# mixture of decaltrative and imperative approach - not one right way to use this
+﻿# mixture of declatrative and imperative approach - not one right way to use this
 
 # no params
 Configuration Params1
@@ -139,5 +138,7 @@ Configuration EnvConfiguration
     }
 }
 
-EnvConfiguration -ConfigurationData $TestConfigData -OutputPath "c:/temp/params"
+EnvConfiguration -ConfigurationData $TestConfigData -OutputPath "c:/DSC/Params"
+cd "c:/DSC/Params"
+
 # EnvConfiguration -ConfigurationData c:/env/test/configdata.psd1 -OutputPath "c:/temp/params"

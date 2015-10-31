@@ -1,6 +1,5 @@
-﻿# guid - machine will use guid toreach out to server to get information, 'I am the guid' , it can be node, role ,environment or oter gathering of things
-# first - machine will introduce as name of fqdn - so they go to a prioperty bag of identity claims that was growing - so reduce to identfier and product can have an inventory with tahasssociateed, but it is only raw platform
-
+﻿# guid - machine will use guid to reach out to server to get information, 'I am the guid' , it can be node, role ,environment or other
+# first - machine will introduce as name of fqdn - so they go to a property bag of identity claims that was growing - only a platform
 [DSCLocalConfigurationManager()]
 Configuration LCM_HTTP_Pull
 {
@@ -42,7 +41,7 @@ Configuration LCM_HTTP_Pull
     }
 }
 
-$nodeNames = "fp-pc2686.fp.lan"
+$nodeNames = "vm-ms-dsc2.fp.lan"
 $guid = [guid]::NewGuid()
 $outp = "c:/DSC/HTTP"
 

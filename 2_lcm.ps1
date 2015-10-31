@@ -1,34 +1,34 @@
 ﻿[DSCLocalConfigurationManager()] 
 Configuration LCMPush
 {
-    Node $NodeNames 
+    # in older previews  set differently
+
+    Node vm-ms-dsc2.fp.lan 
     {
         Settings    
         {
             AllowModuleOverwrite = $true
-            ConfigurationMode = 'ApplyAndAutoCorrect'
+            ConfigurationMode = 'ApplyAndAutoCorrect' # 'ApplyOnce' 'Monitor'
             RefreshMode = 'Push'
-            RefreshFrequencyMins = 60
+            RefreshFrequencyMins = 30
         }
     }
 }
 
-$NodeNames = 's1', 's2'
 $OutPath = 'c:/DSC/LCM'
-
-# genereated metada MOF rather than speficif config MOF - so it runs thru set-dscconfig rather than start-dscconfg
 
 LCMPush -OutputPath $OutPath 
 
-# show MOF
+# show MOF - Meta-Object Facility - http://www.omg.org/spec/MOF/2.4.2/ , instance of OMI in MOF
 cd $OutPath 
 
 # set
-Set-DscLocalConfigurationManager -ComputerName $NodeNames -Path 'c:/DSC/LCM' -Verbose
+Set-DscLocalConfigurationManager -ComputerName vm-ms-dsc2.fp.lan -Path $OutPath -Verbose
 
 # check what was set
-Get-DscLocalConfigurationManager -CimSession s1, s2
+Get-DscLocalConfigurationManager -CimSession vm-ms-dsc2.fp.lan
 
 # show configuration file on machine
-explorer \\s1\c$\windows\system32\configuration
+explorer "\\vm-ms-dsc2.fp.lan\c$\windows\system32\configuration"
+
 

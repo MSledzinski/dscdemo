@@ -7,7 +7,7 @@
         {
             File CustomLogs 
             {
-               Ensure = 'Present'
+               Ensure = 'Absent'
                Type = 'Directory'
                DestinationPath = 'c:/CustomLogs'
                Attributes = 'Archive'
@@ -22,7 +22,7 @@
         }
 }
 
-$nodeName = "fp-pc2686.fp.lan"
+$nodeName = "vm-ms-dsc2.fp.lan"
 
 $outp = 'c:/DSC/HTTP'
 CustomLogDirectory -OutputPath $outp
@@ -37,10 +37,13 @@ $guid = Get-DscLocalConfigurationManager -CimSession $nodeName | % Configuration
 $destination = "$env:PROGRAMFILES/WindowsPowerShell/DscService/Configuration/$guid.mof"
 
 # copy our mof as <configuration id>.mof
-Copy-Item -Path "$oput/CustomLogsDirNodes.mof" -Destination "$destination"
+Copy-Item -Path "$outp/CustomLogsDirNodes.mof" -Destination "$destination"
 
 # generate checksum file, change for every config change
 New-DscChecksum $destination
+
+# check if old config still present
+Get-DscConfiguration -CimSession $nodeName
 
 # manual update invoke - but not config passed this time
 Update-DscConfiguration -ComputerName $nodeName -Wait -Verbose

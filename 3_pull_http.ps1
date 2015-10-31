@@ -44,16 +44,16 @@ Configuration HTTPPullServer
 }
 
 # build MOF
-HTTPPullServer -OutputPath "c:/DSC/HTTP"
-cd "c:/DSC/HTTP"
+HTTPPullServer -OutputPath "c:/DSC/HTTPServer"
+cd "c:/DSC/HTTPServer"
  
 
 # start
-Start-DscConfiguration -Path "c:/DSC/HTTP" -ComputerName localhost -Verbose -Force -Wait
+# Start-DscConfiguration -Path "c:/DSC/HTTP" -ComputerName localhost -Verbose -Force -Wait
 
-# a litlle buit of struggle with isapi handlers and web.config structure (locked secions at parent level) and... after ~1,25h
-
-#  "http://localhost:8080/PSDSCPullServer.svc"
+# a litlle bit of struggle with isapi handlers and web.config structure (locked sections at parent level) and... after ~1h
+# easy hack - create new website and copy content there - will work :)
+# http://localhost:8080/PSDSCPullServer.svc
 
 # odata helper 
 # export-odataendpointproxy
